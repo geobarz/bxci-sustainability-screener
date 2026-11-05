@@ -1,0 +1,61 @@
+industry_label,naics_codes,rationale,confidence,aggregation
+Software,511210;518210,GICS Software covers packaged software (511210 Software Publishers) and cloud/SaaS delivery (518210 Data Processing & Hosting).,medium,simple average (flagged)
+Professional Services,541611;541612;561320,GICS Professional Services = research & consulting and HR/employment services: 541611 Management Consulting; 541612 HR Consulting; 561320 Temporary Help Services.,low,simple average (flagged)
+Commercial Services & Supplies,323111;561612;561720,GICS Commercial Services & Supplies spans printing; security and janitorial/facility services: 323111 Commercial Printing; 561612 Security Guards; 561720 Janitorial. 562111 Solid Waste Collection removed on user review (would overstate a mostly business-services book).,low,simple average (flagged)
+Health Care Providers & Services,621111;621610;622110,Physician practices (621111); home health (621610); hospitals (622110) - the main provider types in sponsor-backed health care.,medium,simple average (flagged)
+Insurance,524210;524126,Private-credit insurance borrowers are mostly brokers (524210 Insurance Agencies & Brokerages) plus some carriers (524126 Direct P&C Carriers).,medium,simple average (flagged)
+Health Care Technology,511210;518210,GICS Health Care Technology = software and data services for health care; same NAICS as software.,medium,simple average (flagged)
+IT Services,541511;541512;518210,GICS IT Services = IT consulting/outsourcing (541511 Custom Programming; 541512 Computer Systems Design) and data processing/hosting (518210).,medium,simple average (flagged)
+Not assigned to an industry by BCRED,,Residual bucket (decision #8): no industry is reported so no factor can be assigned. Propose: show without an emissions proxy.,low,not mapped
+Consumer,,BCRED's own broad label; it could mean anything from retail to consumer services. Too broad to map without guessing. Propose: show without an emissions proxy.,low,not mapped
+Financial Services,522320;523920,GICS Financial Services in private credit is mostly payments/transaction processing (522320) and asset/wealth managers (523920).,low,simple average (flagged)
+Aerospace & Defense,336411;336413,Aircraft manufacturing (336411) and aircraft parts/subassemblies (336413) - typical sponsor-backed A&D suppliers.,medium,simple average (flagged)
+Transportation Infrastructure,488119;488310;488490,GICS Transportation Infrastructure = airport; port and toll-road operators: 488119 Other Airport Operations; 488310 Port & Harbor Operations; 488490 Other Road Transportation Support.,low,simple average (flagged)
+Air Freight & Logistics,492110;488510,GICS Air Freight & Logistics is mostly couriers/express (492110) and freight forwarding/brokerage (488510); asset-light logistics dominates in private credit.,medium,simple average (flagged)
+Construction & Engineering,236220;237310;541330,Commercial building construction (236220); highway/heavy civil (237310); engineering services (541330).,low,simple average (flagged)
+Electrical Equipment,335311;335312;335999,Transformers (335311); motors and generators (335312); other electrical equipment (335999).,medium,simple average (flagged)
+Real Estate Management & Development,531210;531312,Real estate brokerage (531210) and nonresidential property management (531312).,medium,simple average (flagged)
+"Electronic Equipment, Instruments & Components",334418;334419;334513,Printed circuit assembly (334418); other electronic components (334419); industrial measuring instruments (334513).,medium,simple average (flagged)
+Media,515120;541810;511110,TV broadcasting (515120); advertising agencies (541810); newspaper publishing (511110). Wide mix.,low,simple average (flagged)
+Building Products,321911;332321;333415,Wood windows and doors (321911); metal windows and doors (332321); HVAC equipment (333415) - GICS Building Products includes HVAC.,medium,simple average (flagged)
+Pharmaceuticals,325412,Pharmaceutical preparation manufacturing is the direct match.,high,single code
+Health Care Equipment & Supplies,339112;339113;334510,Surgical/medical instruments (339112); surgical appliances and supplies (339113); electromedical devices (334510).,medium,simple average (flagged)
+Life Sciences Tools & Services,334516;541380;541714,Analytical lab instruments (334516); testing laboratories (541380); biotech R&D services (541714) - covers tools and CRO-type services.,medium,simple average (flagged)
+Capital Markets,523110;523920,Investment banking/securities dealing (523110) and portfolio management (523920).,medium,simple average (flagged)
+Marine Transportation,483111;483211,Deep-sea freight (483111) and inland water freight (483211).,medium,simple average (flagged)
+Biotechnology,325414;541714,Biological product manufacturing (325414) and biotech R&D (541714).,medium,simple average (flagged)
+Distributors,423990;424990,GICS Distributors = wholesale distribution of goods; other durable (423990) and nondurable (424990) goods merchant wholesalers.,low,simple average (flagged)
+Wireless Telecommunication Services,517312,Wireless telecommunications carriers is the direct match.,high,single code
+Chemicals,325998;325510;325520,Specialty chemicals dominate in private credit: other chemical products (325998); paints and coatings (325510); adhesives (325520). Excludes commodity petrochemicals.,low,simple average (flagged)
+Trading Companies & Distributors,423830;423610,Industrial machinery/equipment wholesalers (423830) and electrical apparatus wholesalers (423610).,medium,simple average (flagged)
+Industrial Conglomerates,,Conglomerates span many industries by definition; no NAICS match without knowing the companies. Propose: show without an emissions proxy.,low,not mapped
+Machinery,333249;333120;333999,Other industrial machinery (333249); construction machinery (333120); other general-purpose machinery (333999).,medium,simple average (flagged)
+Interactive Media & Services,519130,Internet publishing; broadcasting and web search portals is the direct match.,high,single code
+"Hotels, Restaurants & Leisure",722511;722513;721110;713940,Full-service (722511) and limited-service (722513) restaurants; hotels (721110); fitness centers (713940).,low,simple average (flagged)
+Electric Utilities,,EPA's v1.3 file has NO factors for electric power generation/transmission (NAICS 2211xx); EPA expects electricity to be handled separately. Cannot map from this source.,low,not mapped
+Container and Packaging,322211;326160;332431,Corrugated boxes (322211); plastic bottles (326160); metal cans (332431).,medium,simple average (flagged)
+Metals & Mining,331110;331315;212221,Iron and steel mills (331110); aluminum sheet (331315); gold ore mining (212221). Wide range of intensities.,low,simple average (flagged)
+Paper & Forest Products,322121;321113,Paper mills (322121) and sawmills (321113).,medium,simple average (flagged)
+Specialty Retail,441310;444130;448140,Auto parts stores (441310); hardware stores (444130); family clothing stores (448140).,low,simple average (flagged)
+"Oil, Gas & Consumable Fuels",211120;211130;486210;324110,Crude oil extraction (211120); natural gas extraction (211130); gas pipelines (486210); petroleum refining (324110).,low,simple average (flagged)
+"Airlines, Passenger Airlines",481111,Scheduled passenger air transportation is the direct match. Same industry as 'Airlines' (newer GICS name).,high,single code
+Energy Equipment & Services,213112;333132,Oil and gas support activities (213112) and oil/gas field machinery (333132).,medium,simple average (flagged)
+Household Durables,337121;335220;236115,Upholstered furniture (337121); major appliances (335220); new single-family homebuilding (236115) - GICS includes homebuilders.,low,simple average (flagged)
+Construction Materials,327320;327310;212312,Ready-mix concrete (327320); cement (327310); crushed limestone (212312).,medium,simple average (flagged)
+Diversified Telecommunication Services,517311,Wired telecommunications carriers is the direct match.,high,single code
+Automotive,811111;441110,BCRED's 'Automotive' label is not a GICS name; in private credit this is mostly auto services and dealers: general auto repair (811111); new car dealers (441110).,low,simple average (flagged)
+Broadline Retail,452210;452319,Department stores (452210) and other general merchandise stores (452319).,medium,simple average (flagged)
+Entertainment,512110;713990,Film/video production (512110) and other amusement and recreation (713990).,low,simple average (flagged)
+Food Products,311999;311412,Other food manufacturing (311999) and frozen specialty food (311412).,low,simple average (flagged)
+Airlines,481111,Scheduled passenger air transportation is the direct match.,high,single code
+Auto Components,336390;336340,Other motor vehicle parts (336390) and brake systems (336340).,medium,simple average (flagged)
+Beverages,312111;312120,Soft drinks (312111) and breweries (312120).,medium,simple average (flagged)
+Consumer Staples Distribution & Retail,445110;424410,Supermarkets (445110) and grocery wholesalers (424410).,medium,simple average (flagged)
+Diversified Consumer Services,611710;812210;611310,Educational support (611710); funeral homes (812210); colleges (611310).,low,simple average (flagged)
+Energy,,BCRED's own broad label; it could be oil and gas; power or services. Too broad to map without guessing. Propose: show without an emissions proxy.,low,not mapped
+Ground Transportation,484121;482111,Long-distance general freight trucking (484121) and line-haul railroads (482111).,medium,simple average (flagged)
+Independent Power and Renewable Electricity Producers,,EPA's v1.3 file has NO factors for electric power generation (NAICS 2211xx). Cannot map from this source.,low,not mapped
+Internet & Direct Marketing Retail,454110,Electronic shopping and mail-order houses is the direct match.,high,single code
+Leisure Products,339920;339930,Sporting goods (339920) and toys and games (339930).,medium,simple average (flagged)
+Marine,483111;483211,Older GICS name for marine shipping; same codes as Marine Transportation.,medium,simple average (flagged)
+"Textiles, Apparel & Luxury Goods",315240;316210;339910,Women's apparel (315240); footwear (316210); jewelry (339910).,low,simple average (flagged)

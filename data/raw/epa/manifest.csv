@@ -1,0 +1,4 @@
+"version","what","saved_as","url","bytes","md5"
+"v1.3","CO2e factors (CSV)","data/raw/epa/SupplyChainGHGEmissionFactors_v1.3.0_NAICS_CO2e_USD2022_downloaded-2026-11-05.csv","https://pasteur.epa.gov/uploads/10.23719/1531143/SupplyChainGHGEmissionFactors_v1.3.0_NAICS_CO2e_USD2022.csv",123481,"bd4396e414f706555f7a8843208316f3"
+"v1.4.0","Factors workbook (XLSX)","data/raw/epa/SupplyChainGHGEmissionFactors_v1.4.0_downloaded-2026-11-05.xlsx","https://zenodo.org/api/records/17202747/files/SupplyChainGHGEmissionFactorsv1.4.0.xlsx/content",834887,"6dc23409c31157647e92b69809b5c8ee"
+"v1.4.0","About / methods (PDF)","data/raw/epa/About_SupplyChainGHGEmissionFactors_v1.4.0_downloaded-2026-11-05.pdf","https://zenodo.org/api/records/17202747/files/About%20the%20Supply%20Chain%20Greenhouse%20Gas%20Emission%20Factors%20v1.4.0.pdf/content",966152,"2771e6bc10e01f0bbfc4e48573ce593b"

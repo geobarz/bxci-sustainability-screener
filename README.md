@@ -41,4 +41,5 @@ _TBD. Steps will be added as scripts are written._
 2. Clean latest holdings: `Rscript R/02_clean_soi.R` (writes `data/processed/bcred_holdings_clean.csv`)
    - Optional: inspect raw SOI columns with `Rscript R/02a_inspect_bcred_soi.R` (prints only)
 3. Build sector exposure: `Rscript R/03_clean_sector_subtotals.R` (about 2 minutes; writes `data/processed/bcred_sector_exposure.csv` and `bcred_reconciliation.csv`)
+   - EPA emission factors: `Rscript R/04_fetch_epa_factors.R` (saves to `data/raw/epa/`)
 4. Render dashboard: _TBD_
