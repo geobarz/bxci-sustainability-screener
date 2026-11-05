@@ -3,6 +3,8 @@
 project:
   type: default
   output-dir: ../docs
+  pre-render: pre_render.R    # clear the previous render's files from ../docs
+  post-render: post_render.R  # add ../docs/.nojekyll for GitHub Pages
 
 execute:
   echo: false
