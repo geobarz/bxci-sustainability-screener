@@ -38,14 +38,8 @@
 #   - the subtotals add up to more than the reported total (double counting)
 # =============================================================================
 
-suppressPackageStartupMessages({
-  library(readr)   # reading/writing tab- and comma-separated files
-  library(dplyr)   # filtering and summarising tables
-  library(fs)      # file paths
-})
+source("R/00_helpers.R")   # BCRED_CIK, RAW_BDC_DIR, read_bcred_soi(), read_reported_total()
 
-BCRED_CIK     <- "1803498"
-RAW_BDC_DIR   <- path("data", "raw", "bdc")
 PROCESSED_DIR <- path("data", "processed")
 dir_create(PROCESSED_DIR)
 
@@ -59,19 +53,6 @@ ALL_DIMENSIONS_TO_CHECK <- c("Investment, Identifier Axis", "Legal Entity Axis",
                              "Investment, Issuer Name Axis", "Geographical Axis",
                              "Fair Value Hierarchy and NAV Axis",
                              "Financial Instrument Axis", "Derivative Instrument Axis")
-
-
-# ---- Helper: read every BCRED row from one soi.tsv --------------------------
-# All columns are read as text so nothing is rounded or converted silently.
-# Rows the SEC file got wrong (too many fields) are flagged, not dropped.
-read_bcred_soi <- function(soi_file) {
-  soi <- suppressWarnings(
-    read_tsv(soi_file, col_types = cols(.default = col_character()),
-             quote = "", na = "", progress = FALSE)
-  )
-  soi$malformed <- seq_len(nrow(soi)) %in% problems(soi)$row
-  soi[soi$cik == BCRED_CIK, ]
-}
 
 
 # ---- Helper: keep only BCRED-own industry subtotal rows for the filing date --
@@ -141,41 +122,6 @@ tidy_subtotals <- function(rows, zip_name, soi_file) {
     source_file     = as.character(soi_file),
     filing_url      = rows$inlineurl
   )
-}
-
-
-# ---- Helper: find BCRED's reported total investments in num.tsv -------------
-# Reads num.tsv inside the ZIP in chunks, keeping only this filing's lines.
-# The total is tag InvestmentOwnedAtFairValue, for the period end, with no
-# dimensions (an empty "segments" field).
-read_reported_total <- function(zip_file, adsh, period) {
-  inside <- unzip(zip_file, list = TRUE)$Name
-  num_path <- inside[basename(inside) == "num.tsv"]
-  if (length(num_path) != 1) stop("No num.tsv in ", zip_file)
-
-  con <- unz(zip_file, num_path, open = "r")
-  on.exit(close(con))
-  header <- strsplit(readLines(con, n = 1), "\t", fixed = TRUE)[[1]]
-  keep <- character()
-  repeat {
-    chunk <- readLines(con, n = 500000, warn = FALSE)
-    if (length(chunk) == 0) break
-    keep <- c(keep, chunk[startsWith(chunk, adsh)])
-  }
-
-  fields <- strsplit(keep, "\t", fixed = TRUE)
-  facts <- as_tibble(do.call(rbind, lapply(fields, `length<-`, length(header))),
-                     .name_repair = ~header)
-  total <- facts |>
-    filter(tag == "InvestmentOwnedAtFairValue", qtrs == "0",
-           ddate == format(as.Date(period), "%Y%m%d"),
-           is.na(segments) | segments == "")
-
-  values <- unique(as.numeric(total$value))
-  if (length(values) != 1) {
-    stop(adsh, ": expected one reported total investments value, found ", length(values), ".")
-  }
-  values
 }
 
 

@@ -38,6 +38,7 @@ SEC_USER_AGENT="Your Name your.email@example.com"
 _TBD. Steps will be added as scripts are written._
 
 1. Download raw SEC data: `Rscript R/01_fetch_sec.R` (about 480 MB, saved to `data/raw/`)
-2. Inspect BCRED holdings: `Rscript R/02_inspect_bcred_soi.R` (prints only; writes nothing)
+2. Clean latest holdings: `Rscript R/02_clean_soi.R` (writes `data/processed/bcred_holdings_clean.csv`)
+   - Optional: inspect raw SOI columns with `Rscript R/02a_inspect_bcred_soi.R` (prints only)
 3. Build sector exposure: `Rscript R/03_clean_sector_subtotals.R` (about 2 minutes; writes `data/processed/bcred_sector_exposure.csv` and `bcred_reconciliation.csv`)
 4. Render dashboard: _TBD_

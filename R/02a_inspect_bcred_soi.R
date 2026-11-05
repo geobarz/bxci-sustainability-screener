@@ -1,5 +1,5 @@
 # =============================================================================
-# 02_inspect_bcred_soi.R
+# 02a_inspect_bcred_soi.R
 # -----------------------------------------------------------------------------
 # PURPOSE
 #   Look at (do not change or save) BCRED's schedule of investments (SOI) from
@@ -12,7 +12,7 @@
 # OUTPUT  Printed to the console only. Nothing is written to disk.
 #
 # HOW TO RUN
-#   From the project root:  Rscript R/02_inspect_bcred_soi.R
+#   From the project root:  Rscript R/02a_inspect_bcred_soi.R
 #   Takes about a minute (it reads ~16 files of 30-110 MB each).
 #
 # TWO THINGS TO KNOW ABOUT soi.tsv (see docs-notes/DECISIONS.md)
