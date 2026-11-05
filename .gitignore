@@ -45,3 +45,8 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# Large raw SEC downloads (too big for GitHub). Re-create with R/01_fetch_sec.R.
+# data/raw/bdc/manifest.csv is kept so the exact source files stay traceable.
+data/raw/bdc/*
+!data/raw/bdc/manifest.csv

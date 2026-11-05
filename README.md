@@ -37,6 +37,7 @@ SEC_USER_AGENT="Your Name your.email@example.com"
 ## How to reproduce
 _TBD. Steps will be added as scripts are written._
 
-1. Download raw data: _TBD_
-2. Clean data: _TBD_
-3. Render dashboard: _TBD_
+1. Download raw SEC data: `Rscript R/01_fetch_sec.R` (about 480 MB, saved to `data/raw/`)
+2. Inspect BCRED holdings: `Rscript R/02_inspect_bcred_soi.R` (prints only; writes nothing)
+3. Clean data: _TBD_
+4. Render dashboard: _TBD_
