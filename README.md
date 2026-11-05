@@ -39,5 +39,5 @@ _TBD. Steps will be added as scripts are written._
 
 1. Download raw SEC data: `Rscript R/01_fetch_sec.R` (about 480 MB, saved to `data/raw/`)
 2. Inspect BCRED holdings: `Rscript R/02_inspect_bcred_soi.R` (prints only; writes nothing)
-3. Clean data: _TBD_
+3. Build sector exposure: `Rscript R/03_clean_sector_subtotals.R` (about 2 minutes; writes `data/processed/bcred_sector_exposure.csv` and `bcred_reconciliation.csv`)
 4. Render dashboard: _TBD_
