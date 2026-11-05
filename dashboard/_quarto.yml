@@ -1,0 +1,10 @@
+# Quarto project for the dashboard. Renders index.qmd and methods.qmd into
+# ../docs so GitHub Pages can serve the site from the /docs folder.
+project:
+  type: default
+  output-dir: ../docs
+
+execute:
+  echo: false
+  warning: false
+  message: false

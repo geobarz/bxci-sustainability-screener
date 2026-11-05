@@ -35,12 +35,11 @@ SEC_USER_AGENT="Your Name your.email@example.com"
 `.Renviron` is git-ignored, so your details are never committed.
 
 ## How to reproduce
-_TBD. Steps will be added as scripts are written._
-
 1. Download raw SEC data: `Rscript R/01_fetch_sec.R` (about 480 MB, saved to `data/raw/`)
 2. Clean latest holdings: `Rscript R/02_clean_soi.R` (writes `data/processed/bcred_holdings_clean.csv`)
    - Optional: inspect raw SOI columns with `Rscript R/02a_inspect_bcred_soi.R` (prints only)
 3. Build sector exposure: `Rscript R/03_clean_sector_subtotals.R` (about 2 minutes; writes `data/processed/bcred_sector_exposure.csv` and `bcred_reconciliation.csv`)
    - EPA emission factors: `Rscript R/04_fetch_epa_factors.R` (saves to `data/raw/epa/`)
    - Metrics: `Rscript R/05_metrics.R`, then test with `Rscript tests/test_metrics.R` (writes `sector_summary.csv`, `portfolio_metrics.csv`, `industry_factors.csv`)
-4. Render dashboard: _TBD_
+4. Dashboard inputs: `Rscript R/06_dashboard_inputs.R`
+5. Render dashboard to `docs/`: `cd dashboard && quarto render` (RStudio: open `dashboard/index.qmd`, click Render), then check it with `Rscript tests/test_dashboard.R` from the project root

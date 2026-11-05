@@ -1,0 +1,115 @@
+---
+title: "Methods & limitations"
+subtitle: "BCRED Sector Emissions-Intensity Screen"
+format:
+  html:
+    theme: [default, styles.scss]
+    toc: true
+    toc-location: left
+    page-layout: article
+---
+
+```{r}
+#| label: setup
+# Read only from data/processed/.
+library(readr)
+library(dplyr)
+library(reactable)
+
+PROCESSED <- file.path("..", "data", "processed")   # Quarto runs from dashboard/
+read_processed <- function(file) read_csv(file.path(PROCESSED, file), show_col_types = FALSE)
+sources   <- read_processed("data_sources.csv")
+crosswalk <- read_processed("crosswalk_for_methods.csv")
+metrics   <- read_processed("portfolio_metrics.csv")
+factors   <- read_processed("industry_factors.csv")
+recon     <- read_processed("bcred_reconciliation.csv")
+
+latest <- metrics[metrics$period == max(metrics$period), ]
+fmt_date <- function(d) sub(" 0", " ", format(as.Date(d), "%B %d, %Y"))   # "November 5, 2026"
+cut_low  <- factors$tier_cut_low_medium[1] * 1000
+cut_high <- factors$tier_cut_medium_high[1] * 1000
+```
+
+[← Back to the dashboard](index.html)
+
+## What this is
+
+A screen of the **sector-level** emissions intensity of **Blackstone Private Credit Fund (BCRED, SEC CIK 1803498)**, built only from public filings and public emission factors. It shows where BCRED's money sits by industry, and how emissions-intensive those industries are on average.
+
+::: {.callout-note}
+## Sector-level proxy, not financed emissions
+The indicator multiplies BCRED's exposure to each sector by that sector's average supply-chain emissions per dollar of output. It says nothing about the actual emissions of any borrower, and it is not a PCAF-style financed-emissions figure.
+:::
+
+## Data sources
+
+```{r}
+pulled <- unique(sources$pulled)
+```
+
+All files were downloaded on **`r paste(fmt_date(pulled), collapse = ", ")`**.
+
+- **SEC BDC Data Sets**: BCRED's schedule of investments (`soi.tsv`) and tagged financial data (`num.tsv`), `r sum(grepl("BDC", sources$source))` quarterly or monthly files. [Landing page](https://www.sec.gov/data-research/bdc-data-sets)
+- **SEC EDGAR submissions API**: BCRED's list of 10-K and 10-Q filings. [API documentation](https://www.sec.gov/search-filings/edgar-application-programming-interfaces)
+- **EPA Supply Chain GHG Emission Factors v1.3** (July 2024): kg CO2e per 2022 US dollar, purchaser price, by 6-digit NAICS industry. [data.gov record](https://catalog.data.gov/dataset/supply-chain-greenhouse-gas-emission-factors-v1-3-by-naics-6). v1.4.0 ([Zenodo](https://doi.org/10.5281/zenodo.17202747)) was downloaded for comparison only, because it is not an EPA release.
+
+```{r}
+reactable(
+  sources |> transmute(Source = source, File = detail, Pulled = pulled,
+                       Download = sprintf('<a href="%s">link</a>', url)),
+  columns = list(Download = colDef(html = TRUE, maxWidth = 90), Pulled = colDef(maxWidth = 110)),
+  compact = TRUE, defaultPageSize = 8, searchable = TRUE
+)
+```
+
+## Snapshot
+
+The headline numbers use BCRED's **`r latest$form` for the period ended `r fmt_date(latest$period)`** (SEC accession `r latest$adsh`). The sector view also covers all `r nrow(metrics)` filings from `r fmt_date(min(metrics$period))` onward. That is as far back as the SEC BDC Data Sets go.
+
+Each filing's sector rows add up to BCRED's reported **total investments at fair value**. The holdings table is $10.3m (0.013%) short of that total: one holding's XBRL tag contains stray tab characters, which split its row in the SEC file.
+
+## The metric
+
+**Exposure-weighted sector emissions-intensity indicator**: each mapped industry's EPA emission factor, weighted by that industry's share of BCRED's fair value in mapped industries, summed.
+
+$$
+\text{indicator} = \sum_i \frac{FV_i}{\sum_{j \in \text{mapped}} FV_j} \times \text{factor}_i
+$$
+
+- **FV** = fair value as reported by BCRED, in US dollars. Source: BCRED's own industry subtotals in the schedule of investments.
+- **factor** = the simple average of EPA v1.3 "with margins" factors for the NAICS codes in the crosswalk, in kg CO2e per 2022 USD. Shown as t CO2e per $m (× 1,000).
+- **Coverage**: industries without a factor are excluded from the weights, never treated as zero. Latest coverage is **`r sprintf("%.1f%%", latest$coverage_pct)`**.
+- **Tiers**: High / Medium / Low are tertiles of the factor across the 54 mapped industries: Low ≤ `r round(cut_low)` t/$m < Medium ≤ `r round(cut_high)` t/$m < High.
+
+## The crosswalk
+
+BCRED's industry labels were mapped by hand to NAICS-6 codes. The mapping was reviewed and corrected before use. Where an industry maps to several codes, its factor is their simple average. Six labels have **no emissions proxy**: four are too broad to map without guessing, and EPA v1.3 has no factors for electric power.
+
+```{r}
+reactable(
+  crosswalk |> transmute(Industry = industry_label, Tier = tier,
+                         `Factor (t CO2e/$m)` = factor_kg_per_usd * 1000,
+                         NAICS = naics_with_titles, Confidence = confidence, Rationale = rationale),
+  columns = list(
+    Industry = colDef(minWidth = 170),
+    `Factor (t CO2e/$m)` = colDef(format = colFormat(digits = 0), na = "no proxy", maxWidth = 110),
+    NAICS = colDef(minWidth = 260, na = "–"),
+    Confidence = colDef(maxWidth = 100),
+    Rationale = colDef(minWidth = 300)
+  ),
+  searchable = TRUE, compact = TRUE, defaultPageSize = 10, wrap = TRUE
+)
+```
+
+## Limitations
+
+1. **Proxy, not financed emissions.** Sector averages stand in for each borrower's real emissions. Two companies in the same sector can differ by an order of magnitude.
+2. **Sector-level, not issuer-level.** BCRED tags industry only on subtotals, not on individual holdings, so no company gets its own factor. The holdings explorer has no industry column for this reason.
+3. **Snapshot date.** Holdings are as of `r fmt_date(latest$period)`, reported in a filing made months later and downloaded on `r fmt_date(max(pulled))`. The portfolio will have changed since.
+4. **No Blackstone private data.** Only public SEC filings and public EPA data are used. Nothing here comes from Blackstone systems or non-public information.
+5. **Dollars aren't like-for-like.** EPA factors are per 2022 dollar of purchases; BCRED's values are 2026 dollars of investment. No inflation adjustment is made, and invested capital isn't spending.
+6. **Mapping judgment.** Industry-to-NAICS choices are judgment calls, each rated for confidence. Professional Services and Commercial Services are large and rated low.
+7. **Unmapped exposure.** `r sprintf("%.1f%%", latest$pct_fv_no_proxy)` of fair value has no factor, mostly BCRED's "not assigned" bucket and its broad "Consumer" label.
+8. **SEC data quirks.** Two SOI columns are mislabelled by the SEC (fair value and cost), and a few rows are malformed. Both were checked against XBRL tags and documented.
+
+Every assumption is logged, with the reason, in [`docs-notes/DECISIONS.md`](https://github.com/geobarz/bxci-sustainability-screener/blob/main/docs-notes/DECISIONS.md) in the project repository.

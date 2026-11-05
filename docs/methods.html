@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Methods &amp; limitations</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="methods_files/libs/clipboard/clipboard.min.js"></script>
+<script src="methods_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="methods_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="methods_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="methods_files/libs/quarto-html/popper.min.js"></script>
+<script src="methods_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="methods_files/libs/quarto-html/anchor.min.js"></script>
+<link href="methods_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="methods_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="methods_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="methods_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="methods_files/libs/bootstrap/bootstrap-e07b6e525ac1fe47f2469584a3031aa2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="methods_files/libs/core-js-2.5.3/shim.min.js"></script>
+<script src="methods_files/libs/react-18.2.0/react.min.js"></script>
+<script src="methods_files/libs/react-18.2.0/react-dom.min.js"></script>
+<script src="methods_files/libs/reactwidget-2.0.0/react-tools.js"></script>
+<link href="methods_files/libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet">
+<script src="methods_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="methods_files/libs/reactable-0.4.5/reactable.css" rel="stylesheet">
+<script src="methods_files/libs/reactable-binding-0.4.5/reactable.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#what-this-is" id="toc-what-this-is" class="nav-link active" data-scroll-target="#what-this-is">What this is</a></li>
+  <li><a href="#data-sources" id="toc-data-sources" class="nav-link" data-scroll-target="#data-sources">Data sources</a></li>
+  <li><a href="#snapshot" id="toc-snapshot" class="nav-link" data-scroll-target="#snapshot">Snapshot</a></li>
+  <li><a href="#the-metric" id="toc-the-metric" class="nav-link" data-scroll-target="#the-metric">The metric</a></li>
+  <li><a href="#the-crosswalk" id="toc-the-crosswalk" class="nav-link" data-scroll-target="#the-crosswalk">The crosswalk</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Methods &amp; limitations</h1>
+<p class="subtitle lead">BCRED Sector Emissions-Intensity Screen</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><a href="index.html">← Back to the dashboard</a></p>
+<section id="what-this-is" class="level2">
+<h2 class="anchored" data-anchor-id="what-this-is">What this is</h2>
+<p>A screen of the <strong>sector-level</strong> emissions intensity of <strong>Blackstone Private Credit Fund (BCRED, SEC CIK 1803498)</strong>, built only from public filings and public emission factors. It shows where BCRED’s money sits by industry, and how emissions-intensive those industries are on average.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Sector-level proxy, not financed emissions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The indicator multiplies BCRED’s exposure to each sector by that sector’s average supply-chain emissions per dollar of output. It says nothing about the actual emissions of any borrower, and it is not a PCAF-style financed-emissions figure.</p>
+</div>
+</div>
+</section>
+<section id="data-sources" class="level2">
+<h2 class="anchored" data-anchor-id="data-sources">Data sources</h2>
+<p>All files were downloaded on <strong>November 5, 2026</strong>.</p>
+<ul>
+<li><strong>SEC BDC Data Sets</strong>: BCRED’s schedule of investments (<code>soi.tsv</code>) and tagged financial data (<code>num.tsv</code>), 16 quarterly or monthly files. <a href="https://www.sec.gov/data-research/bdc-data-sets">Landing page</a></li>
+<li><strong>SEC EDGAR submissions API</strong>: BCRED’s list of 10-K and 10-Q filings. <a href="https://www.sec.gov/search-filings/edgar-application-programming-interfaces">API documentation</a></li>
+<li><strong>EPA Supply Chain GHG Emission Factors v1.3</strong> (July 2024): kg CO2e per 2022 US dollar, purchaser price, by 6-digit NAICS industry. <a href="https://catalog.data.gov/dataset/supply-chain-greenhouse-gas-emission-factors-v1-3-by-naics-6">data.gov record</a>. v1.4.0 (<a href="https://doi.org/10.5281/zenodo.17202747">Zenodo</a>) was downloaded for comparison only, because it is not an EPA release.</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<div class="reactable html-widget html-fill-item" id="htmlwidget-ce1334a9d87f269be7c3" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-ce1334a9d87f269be7c3">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Source":["SEC BDC Data Sets (schedule of investments, soi.tsv / num.tsv)","SEC BDC Data Sets (schedule of investments, soi.tsv / num.tsv)","SEC BDC Data Sets (schedule of investments, soi.tsv / num.tsv)","SEC BDC Data Sets (schedule of investments, soi.tsv / num.tsv)","SEC BDC Data Sets (schedule of investments, soi.tsv / num.tsv)","SEC BDC Data Sets (schedule of investments, soi.tsv / num.tsv)","SEC BDC Data Sets (schedule of investments, soi.tsv / num.tsv)","SEC BDC Data Sets (schedule of investments, soi.tsv / num.tsv)","SEC BDC Data Sets (schedule of investments, soi.tsv / num.tsv)","SEC BDC Data Sets (schedule of investments, soi.tsv / num.tsv)","SEC BDC Data Sets (schedule of investments, soi.tsv / num.tsv)","SEC BDC Data Sets (schedule of investments, soi.tsv / num.tsv)","SEC BDC Data Sets (schedule of investments, soi.tsv / num.tsv)","SEC BDC Data Sets (schedule of investments, soi.tsv / num.tsv)","SEC BDC Data Sets (schedule of investments, soi.tsv / num.tsv)","SEC BDC Data Sets (schedule of investments, soi.tsv / num.tsv)","SEC EDGAR submissions API (BCRED filing list)","EPA Supply Chain GHG Emission Factors v1.3","EPA Supply Chain GHG Emission Factors v1.4.0","EPA Supply Chain GHG Emission Factors v1.4.0"],"File":["2026_08_bdc.zip","2026_05_bdc.zip","2026_03_bdc.zip","2025q4_bdc.zip","2025q3_bdc.zip","2025q2_bdc.zip","2025q1_bdc.zip","2024q4_bdc.zip","2024q3_bdc.zip","2024q2_bdc.zip","2024q1_bdc.zip","2023q4_bdc.zip","2023q3_bdc.zip","2023q2_bdc.zip","2023q1_bdc.zip","2022q4_bdc.zip","CIK0001803498_submissions_2026-11-05.json","CO2e factors (CSV)","Factors workbook (XLSX)","About / methods (PDF)"],"Pulled":["2026-11-05","2026-11-05","2026-11-05","2026-11-05","2026-11-05","2026-11-05","2026-11-05","2026-11-05","2026-11-05","2026-11-05","2026-11-05","2026-11-05","2026-11-05","2026-11-05","2026-11-05","2026-11-05","2026-11-05","2026-11-05","2026-11-05","2026-11-05"],"Download":["<a href=\"https://www.sec.gov/files/datastandardsinnovation/data/business-development-company-bdc-data-sets/2026_08_bdc.zip\">link<\/a>","<a href=\"https://www.sec.gov/files/datastandardsinnovation/data/business-development-company-bdc-data-sets/2026_05_bdc.zip\">link<\/a>","<a href=\"https://www.sec.gov/files/datastandardsinnovation/data/business-development-company-bdc-data-sets/2026_03_bdc.zip\">link<\/a>","<a href=\"https://www.sec.gov/files/datastandardsinnovation/data/business-development-company-bdc-data-sets/2025q4_bdc.zip\">link<\/a>","<a href=\"https://www.sec.gov/files/datastandardsinnovation/data/business-development-company-bdc-data-sets/2025q3_bdc.zip\">link<\/a>","<a href=\"https://www.sec.gov/files/datastandardsinnovation/data/business-development-company-bdc-data-sets/2025q2_bdc.zip\">link<\/a>","<a href=\"https://www.sec.gov/files/datastandardsinnovation/data/business-development-company-bdc-data-sets/2025q1_bdc.zip\">link<\/a>","<a href=\"https://www.sec.gov/files/datastandardsinnovation/data/business-development-company-bdc-data-sets/2024q4_bdc.zip\">link<\/a>","<a href=\"https://www.sec.gov/files/datastandardsinnovation/data/business-development-company-bdc-data-sets/2024q3_bdc.zip\">link<\/a>","<a href=\"https://www.sec.gov/files/datastandardsinnovation/data/business-development-company-bdc-data-sets/2024q2_bdc.zip\">link<\/a>","<a href=\"https://www.sec.gov/files/datastandardsinnovation/data/business-development-company-bdc-data-sets/2024q1_bdc.zip\">link<\/a>","<a href=\"https://www.sec.gov/files/datastandardsinnovation/data/business-development-company-bdc-data-sets/2023q4_bdc.zip\">link<\/a>","<a href=\"https://www.sec.gov/files/datastandardsinnovation/data/business-development-company-bdc-data-sets/2023q3_bdc.zip\">link<\/a>","<a href=\"https://www.sec.gov/files/datastandardsinnovation/data/business-development-company-bdc-data-sets/2023q2_bdc.zip\">link<\/a>","<a href=\"https://www.sec.gov/files/datastandardsinnovation/data/business-development-company-bdc-data-sets/2023q1_bdc.zip\">link<\/a>","<a href=\"https://www.sec.gov/files/datastandardsinnovation/data/business-development-company-bdc-data-sets/2022q4_bdc.zip\">link<\/a>","<a href=\"https://data.sec.gov/submissions/CIK0001803498.json\">link<\/a>","<a href=\"https://pasteur.epa.gov/uploads/10.23719/1531143/SupplyChainGHGEmissionFactors_v1.3.0_NAICS_CO2e_USD2022.csv\">link<\/a>","<a href=\"https://zenodo.org/api/records/17202747/files/SupplyChainGHGEmissionFactorsv1.4.0.xlsx/content\">link<\/a>","<a href=\"https://zenodo.org/api/records/17202747/files/About%20the%20Supply%20Chain%20Greenhouse%20Gas%20Emission%20Factors%20v1.4.0.pdf/content\">link<\/a>"]},"columns":[{"id":"Source","name":"Source","type":"character"},{"id":"File","name":"File","type":"character"},{"id":"Pulled","name":"Pulled","type":"Date","maxWidth":110},{"id":"Download","name":"Download","type":"character","html":true,"maxWidth":90}],"searchable":true,"defaultPageSize":8,"compact":true,"dataKey":"effa1008b162893b5d44bab57ce0c5f9"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="snapshot" class="level2">
+<h2 class="anchored" data-anchor-id="snapshot">Snapshot</h2>
+<p>The headline numbers use BCRED’s <strong>10-Q for the period ended June 30, 2026</strong> (SEC accession 0001803498-26-000048). The sector view also covers all 16 filings from September 30, 2022 onward. That is as far back as the SEC BDC Data Sets go.</p>
+<p>Each filing’s sector rows add up to BCRED’s reported <strong>total investments at fair value</strong>. The holdings table is $10.3m (0.013%) short of that total: one holding’s XBRL tag contains stray tab characters, which split its row in the SEC file.</p>
+</section>
+<section id="the-metric" class="level2">
+<h2 class="anchored" data-anchor-id="the-metric">The metric</h2>
+<p><strong>Exposure-weighted sector emissions-intensity indicator</strong>: each mapped industry’s EPA emission factor, weighted by that industry’s share of BCRED’s fair value in mapped industries, summed.</p>
+<p><span class="math display">\[
+\text{indicator} = \sum_i \frac{FV_i}{\sum_{j \in \text{mapped}} FV_j} \times \text{factor}_i
+\]</span></p>
+<ul>
+<li><strong>FV</strong> = fair value as reported by BCRED, in US dollars. Source: BCRED’s own industry subtotals in the schedule of investments.</li>
+<li><strong>factor</strong> = the simple average of EPA v1.3 “with margins” factors for the NAICS codes in the crosswalk, in kg CO2e per 2022 USD. Shown as t CO2e per $m (× 1,000).</li>
+<li><strong>Coverage</strong>: industries without a factor are excluded from the weights, never treated as zero. Latest coverage is <strong>92.2%</strong>.</li>
+<li><strong>Tiers</strong>: High / Medium / Low are tertiles of the factor across the 54 mapped industries: Low ≤ 107 t/<span class="math inline">\(m &lt; Medium ≤ 212 t/\)</span>m &lt; High.</li>
+</ul>
+</section>
+<section id="the-crosswalk" class="level2">
+<h2 class="anchored" data-anchor-id="the-crosswalk">The crosswalk</h2>
+<p>BCRED’s industry labels were mapped by hand to NAICS-6 codes. The mapping was reviewed and corrected before use. Where an industry maps to several codes, its factor is their simple average. Six labels have <strong>no emissions proxy</strong>: four are too broad to map without guessing, and EPA v1.3 has no factors for electric power.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="reactable html-widget html-fill-item" id="htmlwidget-be31fc47bcea7e9919f6" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-be31fc47bcea7e9919f6">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Industry":["Air Freight & Logistics","Airlines","Airlines, Passenger Airlines","Auto Components","Beverages","Chemicals","Construction Materials","Container and Packaging","Energy Equipment & Services","Food Products","Ground Transportation","Machinery","Marine","Marine Transportation","Metals & Mining","Oil, Gas & Consumable Fuels","Paper & Forest Products","Real Estate Management & Development","Automotive","Capital Markets","Diversified Consumer Services","Diversified Telecommunication Services","Electronic Equipment, Instruments & Components","Financial Services","Health Care Technology","IT Services","Insurance","Interactive Media & Services","Internet & Direct Marketing Retail","Media","Pharmaceuticals","Professional Services","Software","Specialty Retail","Trading Companies & Distributors","Wireless Telecommunication Services","Aerospace & Defense","Biotechnology","Broadline Retail","Building Products","Commercial Services & Supplies","Construction & Engineering","Consumer Staples Distribution & Retail","Distributors","Electrical Equipment","Entertainment","Health Care Equipment & Supplies","Health Care Providers & Services","Hotels, Restaurants & Leisure","Household Durables","Leisure Products","Life Sciences Tools & Services","Textiles, Apparel & Luxury Goods","Transportation Infrastructure","Consumer","Electric Utilities","Energy","Independent Power and Renewable Electricity Producers","Industrial Conglomerates","Not assigned to an industry by BCRED"],"Tier":["High","High","High","High","High","High","High","High","High","High","High","High","High","High","High","High","High","High","Low","Low","Low","Low","Low","Low","Low","Low","Low","Low","Low","Low","Low","Low","Low","Low","Low","Low","Medium","Medium","Medium","Medium","Medium","Medium","Medium","Medium","Medium","Medium","Medium","Medium","Medium","Medium","Medium","Medium","Medium","Medium","No emissions proxy","No emissions proxy","No emissions proxy","No emissions proxy","No emissions proxy","No emissions proxy"],"Factor (t CO2e/$m)":[232.5,644,644,271.5,244,440.666666666667,1603,458.666666666667,295.5,443,530.5,220.666666666667,816,816,700.333333333333,674.75,456.5,246,88,54.5,98.3333333333333,75,87.3333333333333,69,86.5,88.6666666666667,31,67,94,82,99,69,86.5,99.3333333333333,99,96,154.5,153,164,186.333333333333,174.666666666667,194,172.5,126,137.666666666667,143.5,143.666666666667,110.666666666667,207.25,184.666666666667,156.5,120.333333333333,170,162,"NA","NA","NA","NA","NA","NA"],"NAICS":["492110 Couriers and Express Delivery Services; 488510 Freight Transportation Arrangement","481111 Scheduled Passenger Air Transportation","481111 Scheduled Passenger Air Transportation","336390 Other Motor Vehicle Parts Manufacturing; 336340 Motor Vehicle Brake System Manufacturing","312111 Soft Drink Manufacturing; 312120 Breweries","325998 All Other Miscellaneous Chemical Product and Preparation Manufacturing; 325510 Paint and Coating Manufacturing; 325520 Adhesive Manufacturing","327320 Ready-Mix Concrete Manufacturing; 327310 Cement Manufacturing; 212312 Crushed and Broken Limestone Mining and Quarrying","322211 Corrugated and Solid Fiber Box Manufacturing; 326160 Plastics Bottle Manufacturing; 332431 Metal Can Manufacturing","213112 Support Activities for Oil and Gas Operations; 333132 Oil and Gas Field Machinery and Equipment Manufacturing","311999 All Other Miscellaneous Food Manufacturing; 311412 Frozen Specialty Food Manufacturing","484121 General Freight Trucking, Long-Distance, Truckload; 482111 Line-Haul Railroads","333249 Other Industrial Machinery Manufacturing; 333120 Construction Machinery Manufacturing; 333999 All Other Miscellaneous General Purpose Machinery Manufacturing","483111 Deep Sea Freight Transportation; 483211 Inland Water Freight Transportation","483111 Deep Sea Freight Transportation; 483211 Inland Water Freight Transportation","331110 Iron and Steel Mills and Ferroalloy Manufacturing; 331315 Aluminum Sheet, Plate, and Foil Manufacturing; 212221 Gold Ore Mining","211120 Crude Petroleum Extraction; 211130 Natural Gas Extraction; 486210 Pipeline Transportation of Natural Gas; 324110 Petroleum Refineries","322121 Paper (except Newsprint) Mills; 321113 Sawmills","531210 Offices of Real Estate Agents and Brokers; 531312 Nonresidential Property Managers","811111 General Automotive Repair; 441110 New Car Dealers","523110 Investment Banking and Securities Dealing; 523920 Portfolio Management","611710 Educational Support Services; 812210 Funeral Homes and Funeral Services; 611310 Colleges, Universities, and Professional Schools","517311 Wired Telecommunications Carriers","334418 Printed Circuit Assembly (Electronic Assembly) Manufacturing; 334419 Other Electronic Component Manufacturing; 334513 Instruments and Related Products Manufacturing for Measuring, Displaying, and Controlling Industrial Process Variables","522320 Financial Transactions Processing, Reserve, and Clearinghouse Activities; 523920 Portfolio Management","511210 Software Publishers; 518210 Data Processing, Hosting, and Related Services","541511 Custom Computer Programming Services; 541512 Computer Systems Design Services; 518210 Data Processing, Hosting, and Related Services","524210 Insurance Agencies and Brokerages; 524126 Direct Property and Casualty Insurance Carriers","519130 Internet Publishing and Broadcasting and Web Search Portals","454110 Electronic Shopping and Mail-Order Houses","515120 Television Broadcasting; 541810 Advertising Agencies; 511110 Newspaper Publishers","325412 Pharmaceutical Preparation Manufacturing","541611 Administrative Management and General Management Consulting Services; 541612 Human Resources Consulting Services; 561320 Temporary Help Services","511210 Software Publishers; 518210 Data Processing, Hosting, and Related Services","441310 Automotive Parts and Accessories Stores; 444130 Hardware Stores; 448140 Family Clothing Stores","423830 Industrial Machinery and Equipment Merchant Wholesalers; 423610 Electrical Apparatus and Equipment, Wiring Supplies, and Related Equipment Merchant Wholesalers","517312 Wireless Telecommunications Carriers (except Satellite)","336411 Aircraft Manufacturing; 336413 Other Aircraft Parts and Auxiliary Equipment Manufacturing","325414 Biological Product (except Diagnostic) Manufacturing; 541714 Research and Development in Biotechnology (except Nanobiotechnology)","452210 Department Stores; 452319 All Other General Merchandise Stores","321911 Wood Window and Door Manufacturing; 332321 Metal Window and Door Manufacturing; 333415 Air-Conditioning and Warm Air Heating Equipment and Commercial and Industrial Refrigeration Equipment Manufacturing","323111 Commercial Printing (except Screen and Books); 561612 Security Guards and Patrol Services; 561720 Janitorial Services","236220 Commercial and Institutional Building Construction; 237310 Highway, Street, and Bridge Construction; 541330 Engineering Services","445110 Supermarkets and Other Grocery (except Convenience) Stores; 424410 General Line Grocery Merchant Wholesalers","423990 Other Miscellaneous Durable Goods Merchant Wholesalers; 424990 Other Miscellaneous Nondurable Goods Merchant Wholesalers","335311 Power, Distribution, and Specialty Transformer Manufacturing; 335312 Motor and Generator Manufacturing; 335999 All Other Miscellaneous Electrical Equipment and Component Manufacturing","512110 Motion Picture and Video Production; 713990 All Other Amusement and Recreation Industries","339112 Surgical and Medical Instrument Manufacturing; 339113 Surgical Appliance and Supplies Manufacturing; 334510 Electromedical and Electrotherapeutic Apparatus Manufacturing","621111 Offices of Physicians (except Mental Health Specialists); 621610 Home Health Care Services; 622110 General Medical and Surgical Hospitals","722511 Full-Service Restaurants; 722513 Limited-Service Restaurants; 721110 Hotels (except Casino Hotels) and Motels; 713940 Fitness and Recreational Sports Centers","337121 Upholstered Household Furniture Manufacturing; 335220 Major Household Appliance Manufacturing; 236115 New Single-Family Housing Construction (except For-Sale Builders)","339920 Sporting and Athletic Goods Manufacturing; 339930 Doll, Toy, and Game Manufacturing","334516 Analytical Laboratory Instrument Manufacturing; 541380 Testing Laboratories; 541714 Research and Development in Biotechnology (except Nanobiotechnology)","315240 Women's, Girls', and Infants' Cut and Sew Apparel Manufacturing; 316210 Footwear Manufacturing; 339910 Jewelry and Silverware Manufacturing","488119 Other Airport Operations; 488310 Port and Harbor Operations; 488490 Other Support Activities for Road Transportation",null,null,null,null,null,null],"Confidence":["medium","high","high","medium","medium","low","medium","medium","medium","low","medium","medium","medium","medium","low","low","medium","medium","low","medium","low","high","medium","low","medium","medium","medium","high","high","low","high","low","medium","low","medium","high","medium","medium","medium","medium","low","low","medium","low","medium","low","medium","medium","low","low","medium","medium","low","low","low","low","low","low","low","low"],"Rationale":["GICS Air Freight & Logistics is mostly couriers/express (492110) and freight forwarding/brokerage (488510); asset-light logistics dominates in private credit.","Scheduled passenger air transportation is the direct match.","Scheduled passenger air transportation is the direct match. Same industry as 'Airlines' (newer GICS name).","Other motor vehicle parts (336390) and brake systems (336340).","Soft drinks (312111) and breweries (312120).","Specialty chemicals dominate in private credit: other chemical products (325998); paints and coatings (325510); adhesives (325520). Excludes commodity petrochemicals.","Ready-mix concrete (327320); cement (327310); crushed limestone (212312).","Corrugated boxes (322211); plastic bottles (326160); metal cans (332431).","Oil and gas support activities (213112) and oil/gas field machinery (333132).","Other food manufacturing (311999) and frozen specialty food (311412).","Long-distance general freight trucking (484121) and line-haul railroads (482111).","Other industrial machinery (333249); construction machinery (333120); other general-purpose machinery (333999).","Older GICS name for marine shipping; same codes as Marine Transportation.","Deep-sea freight (483111) and inland water freight (483211).","Iron and steel mills (331110); aluminum sheet (331315); gold ore mining (212221). Wide range of intensities.","Crude oil extraction (211120); natural gas extraction (211130); gas pipelines (486210); petroleum refining (324110).","Paper mills (322121) and sawmills (321113).","Real estate brokerage (531210) and nonresidential property management (531312).","BCRED's 'Automotive' label is not a GICS name; in private credit this is mostly auto services and dealers: general auto repair (811111); new car dealers (441110).","Investment banking/securities dealing (523110) and portfolio management (523920).","Educational support (611710); funeral homes (812210); colleges (611310).","Wired telecommunications carriers is the direct match.","Printed circuit assembly (334418); other electronic components (334419); industrial measuring instruments (334513).","GICS Financial Services in private credit is mostly payments/transaction processing (522320) and asset/wealth managers (523920).","GICS Health Care Technology = software and data services for health care; same NAICS as software.","GICS IT Services = IT consulting/outsourcing (541511 Custom Programming; 541512 Computer Systems Design) and data processing/hosting (518210).","Private-credit insurance borrowers are mostly brokers (524210 Insurance Agencies & Brokerages) plus some carriers (524126 Direct P&C Carriers).","Internet publishing; broadcasting and web search portals is the direct match.","Electronic shopping and mail-order houses is the direct match.","TV broadcasting (515120); advertising agencies (541810); newspaper publishing (511110). Wide mix.","Pharmaceutical preparation manufacturing is the direct match.","GICS Professional Services = research & consulting and HR/employment services: 541611 Management Consulting; 541612 HR Consulting; 561320 Temporary Help Services.","GICS Software covers packaged software (511210 Software Publishers) and cloud/SaaS delivery (518210 Data Processing & Hosting).","Auto parts stores (441310); hardware stores (444130); family clothing stores (448140).","Industrial machinery/equipment wholesalers (423830) and electrical apparatus wholesalers (423610).","Wireless telecommunications carriers is the direct match.","Aircraft manufacturing (336411) and aircraft parts/subassemblies (336413) - typical sponsor-backed A&D suppliers.","Biological product manufacturing (325414) and biotech R&D (541714).","Department stores (452210) and other general merchandise stores (452319).","Wood windows and doors (321911); metal windows and doors (332321); HVAC equipment (333415) - GICS Building Products includes HVAC.","GICS Commercial Services & Supplies spans printing; security and janitorial/facility services: 323111 Commercial Printing; 561612 Security Guards; 561720 Janitorial. 562111 Solid Waste Collection removed on user review (would overstate a mostly business-services book).","Commercial building construction (236220); highway/heavy civil (237310); engineering services (541330).","Supermarkets (445110) and grocery wholesalers (424410).","GICS Distributors = wholesale distribution of goods; other durable (423990) and nondurable (424990) goods merchant wholesalers.","Transformers (335311); motors and generators (335312); other electrical equipment (335999).","Film/video production (512110) and other amusement and recreation (713990).","Surgical/medical instruments (339112); surgical appliances and supplies (339113); electromedical devices (334510).","Physician practices (621111); home health (621610); hospitals (622110) - the main provider types in sponsor-backed health care.","Full-service (722511) and limited-service (722513) restaurants; hotels (721110); fitness centers (713940).","Upholstered furniture (337121); major appliances (335220); new single-family homebuilding (236115) - GICS includes homebuilders.","Sporting goods (339920) and toys and games (339930).","Analytical lab instruments (334516); testing laboratories (541380); biotech R&D services (541714) - covers tools and CRO-type services.","Women's apparel (315240); footwear (316210); jewelry (339910).","GICS Transportation Infrastructure = airport; port and toll-road operators: 488119 Other Airport Operations; 488310 Port & Harbor Operations; 488490 Other Road Transportation Support.","BCRED's own broad label; it could mean anything from retail to consumer services. Too broad to map without guessing. Propose: show without an emissions proxy.","EPA's v1.3 file has NO factors for electric power generation/transmission (NAICS 2211xx); EPA expects electricity to be handled separately. Cannot map from this source.","BCRED's own broad label; it could be oil and gas; power or services. Too broad to map without guessing. Propose: show without an emissions proxy.","EPA's v1.3 file has NO factors for electric power generation (NAICS 2211xx). Cannot map from this source.","Conglomerates span many industries by definition; no NAICS match without knowing the companies. Propose: show without an emissions proxy.","Residual bucket (decision #8): no industry is reported so no factor can be assigned. Propose: show without an emissions proxy."]},"columns":[{"id":"Industry","name":"Industry","type":"character","minWidth":170},{"id":"Tier","name":"Tier","type":"character"},{"id":"Factor (t CO2e/$m)","name":"Factor (t CO2e/$m)","type":"numeric","format":{"cell":{"digits":0},"aggregated":{"digits":0}},"na":"no proxy","maxWidth":110},{"id":"NAICS","name":"NAICS","type":"character","na":"–","minWidth":260},{"id":"Confidence","name":"Confidence","type":"character","maxWidth":100},{"id":"Rationale","name":"Rationale","type":"character","minWidth":300}],"searchable":true,"defaultPageSize":10,"compact":true,"dataKey":"1126bef069bd6fc0155476f874ff090e"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="limitations" class="level2">
+<h2 class="anchored" data-anchor-id="limitations">Limitations</h2>
+<ol type="1">
+<li><strong>Proxy, not financed emissions.</strong> Sector averages stand in for each borrower’s real emissions. Two companies in the same sector can differ by an order of magnitude.</li>
+<li><strong>Sector-level, not issuer-level.</strong> BCRED tags industry only on subtotals, not on individual holdings, so no company gets its own factor. The holdings explorer has no industry column for this reason.</li>
+<li><strong>Snapshot date.</strong> Holdings are as of June 30, 2026, reported in a filing made months later and downloaded on November 5, 2026. The portfolio will have changed since.</li>
+<li><strong>No Blackstone private data.</strong> Only public SEC filings and public EPA data are used. Nothing here comes from Blackstone systems or non-public information.</li>
+<li><strong>Dollars aren’t like-for-like.</strong> EPA factors are per 2022 dollar of purchases; BCRED’s values are 2026 dollars of investment. No inflation adjustment is made, and invested capital isn’t spending.</li>
+<li><strong>Mapping judgment.</strong> Industry-to-NAICS choices are judgment calls, each rated for confidence. Professional Services and Commercial Services are large and rated low.</li>
+<li><strong>Unmapped exposure.</strong> 7.8% of fair value has no factor, mostly BCRED’s “not assigned” bucket and its broad “Consumer” label.</li>
+<li><strong>SEC data quirks.</strong> Two SOI columns are mislabelled by the SEC (fair value and cost), and a few rows are malformed. Both were checked against XBRL tags and documented.</li>
+</ol>
+<p>Every assumption is logged, with the reason, in <a href="https://github.com/geobarz/bxci-sustainability-screener/blob/main/docs-notes/DECISIONS.md"><code>docs-notes/DECISIONS.md</code></a> in the project repository.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,328 @@
+---
+title: "BCRED Sector Emissions-Intensity Screen"
+author: "Public-data portfolio piece"
+format:
+  dashboard:
+    theme: [default, styles.scss]
+    orientation: rows
+    nav-buttons:
+      - text: "Methods & limitations"
+        href: methods.html
+---
+
+```{r}
+#| label: setup
+# Everything on this page is read from data/processed/ only.
+# Numbers are computed here from those CSVs, never typed in by hand.
+library(readr)
+library(dplyr)
+library(plotly)
+library(reactable)
+library(crosstalk)
+library(htmltools)
+
+PROCESSED <- file.path("..", "data", "processed")   # Quarto runs from dashboard/
+read_processed <- function(file) read_csv(file.path(PROCESSED, file), show_col_types = FALSE)
+metrics  <- read_processed("portfolio_metrics.csv")
+summ     <- read_processed("sector_summary.csv")
+holdings <- read_processed("bcred_holdings_clean.csv")
+
+UNASSIGNED <- "Not assigned to an industry by BCRED"
+TIER_ORDER <- c("High", "Medium", "Low", "No emissions proxy")
+# One blue scale: darker = more emissions-intensive. Gray = no proxy.
+TIER_COLORS <- c(High = "#104281", Medium = "#2a78d6", Low = "#86b6ef", "No emissions proxy" = "#c3c2b7")
+
+latest   <- max(metrics$period)
+m        <- metrics[metrics$period == latest, ]
+s_latest <- summ[summ$period == latest, ]
+
+fmt_bn  <- function(x) paste0("$", formatC(x / 1e9, format = "f", digits = 2), "bn")
+fmt_pct <- function(x, d = 1) paste0(formatC(x, format = "f", digits = d), "%")
+fmt_date <- function(d) format(as.Date(d), "%b %d, %Y")
+
+tier_share <- s_latest |>
+  group_by(tier) |>
+  summarise(fair_value = sum(fair_value), pct = sum(pct_of_portfolio), .groups = "drop") |>
+  mutate(tier = factor(tier, levels = TIER_ORDER)) |>
+  arrange(tier)
+pct_low_medium <- sum(tier_share$pct[tier_share$tier %in% c("Low", "Medium")])
+top_sector     <- s_latest |> filter(industry != UNASSIGNED) |> slice_max(fair_value, n = 1)
+n_industries   <- sum(s_latest$industry != UNASSIGNED)
+
+# A chart title that states the finding, placed above the chart.
+chart_title <- function(text, sub = NULL) {
+  tagList(tags$p(style = "font-weight:600;font-size:1rem;margin:0 0 2px 0;", text),
+          if (!is.null(sub)) tags$p(class = "proxy-label", style = "margin:0 0 6px 0;", sub))
+}
+```
+
+# Overview
+
+## Row {height=18%}
+
+::: {.card}
+::: {.takeaway}
+**So what:** `r fmt_pct(pct_low_medium)` of BCRED's `r fmt_bn(m$total_fair_value)` portfolio sits in Low- or Medium-intensity sectors. `r top_sector$industry` alone is `r fmt_pct(top_sector$pct_of_portfolio)`. That puts its exposure-weighted sector emissions-intensity indicator at **`r round(m$indicator_t_per_usd_m)` t CO2e per $m**, with only `r fmt_pct(m$pct_fv_high_tier)` of fair value in High-intensity sectors.
+:::
+::: {.proxy-label}
+Sector-level proxy, not financed emissions. Snapshot: `r m$form` for the period ended `r fmt_date(latest)`. Indicator covers `r fmt_pct(m$coverage_pct)` of fair value; the rest has no sector factor.
+:::
+:::
+
+## Row {height=22%}
+
+```{r}
+#| content: valuebox
+#| title: "Total investments at fair value"
+list(icon = "bank", color = "light", value = fmt_bn(m$total_fair_value))
+```
+
+```{r}
+#| content: valuebox
+#| title: "Holdings (BCRED's own)"
+list(icon = "list-ul", color = "light", value = format(nrow(holdings), big.mark = ","))
+```
+
+```{r}
+#| content: valuebox
+#| title: "Industries"
+list(icon = "diagram-3", color = "light", value = n_industries)
+```
+
+```{r}
+#| content: valuebox
+#| title: "Weighted intensity (t CO2e / $m)"
+list(icon = "speedometer2", color = "light", value = round(m$indicator_t_per_usd_m))
+```
+
+```{r}
+#| content: valuebox
+#| title: "Fair value in High tier"
+list(icon = "exclamation-triangle", color = "light", value = fmt_pct(m$pct_fv_high_tier))
+```
+
+## Row {height=60%}
+
+```{r}
+#| label: tier-chart
+tier_plot <- plot_ly(
+  tier_share, x = ~pct, y = ~tier, type = "bar", orientation = "h",
+  marker = list(color = unname(TIER_COLORS[as.character(tier_share$tier)])),
+  text = ~fmt_pct(pct), textposition = "outside", cliponaxis = FALSE,
+  hovertext = ~paste0(tier, " tier<br>", fmt_bn(fair_value), " (", fmt_pct(pct), " of fair value)"),
+  hoverinfo = "text"
+) |>
+  layout(
+    xaxis = list(title = "Share of fair value (%)", range = c(0, max(tier_share$pct) * 1.15),
+                 gridcolor = "#e1e0d9", zeroline = FALSE),
+    yaxis = list(title = "", autorange = "reversed"),
+    margin = list(l = 10, r = 30, t = 10, b = 40),
+    plot_bgcolor = "#fcfcfb", paper_bgcolor = "#fcfcfb",
+    font = list(family = "system-ui, -apple-system, Segoe UI, sans-serif")
+  ) |>
+  config(displayModeBar = FALSE)
+
+tagList(
+  chart_title(
+    paste0("Most of the portfolio is in Low- and Medium-intensity sectors (",
+           fmt_pct(pct_low_medium), "); High-intensity sectors are ", fmt_pct(m$pct_fv_high_tier)),
+    paste0("Share of fair value by emissions-intensity tier, ", fmt_date(latest),
+           ". Tiers are tertiles of the EPA sector factor across 54 mapped industries.")),
+  tier_plot
+)
+```
+
+# Sector heatmap {scrolling="true"}
+
+```{r}
+#| label: heatmap-prep
+# Rows: industries held at the latest period, grouped by tier, largest first.
+row_order <- s_latest |>
+  mutate(tier = factor(tier, levels = TIER_ORDER)) |>
+  arrange(tier, desc(fair_value)) |>
+  mutate(row_label = paste0(industry, " · ", tier))
+
+periods <- sort(unique(summ$period))
+heat <- summ |>
+  filter(industry %in% row_order$industry) |>
+  left_join(select(row_order, industry, row_label), by = "industry")
+
+z    <- matrix(NA_real_, nrow(row_order), length(periods))
+hover <- matrix("", nrow(row_order), length(periods))
+for (k in seq_len(nrow(heat))) {
+  i <- match(heat$industry[k], row_order$industry); j <- match(heat$period[k], periods)
+  z[i, j] <- heat$pct_of_portfolio[k]
+  hover[i, j] <- paste0(
+    "<b>", heat$industry[k], "</b><br>", fmt_date(heat$period[k]), "<br>",
+    fmt_pct(heat$pct_of_portfolio[k], 2), " of fair value (", fmt_bn(heat$fair_value[k]), ")<br>",
+    "Tier: ", heat$tier[k],
+    ifelse(is.na(heat$factor_t_per_usd_m[k]), "",
+           paste0("<br>Factor: ", round(heat$factor_t_per_usd_m[k]), " t CO2e/$m")))
+}
+
+top_each_period <- summ |> filter(industry != UNASSIGNED) |> group_by(period) |>
+  slice_max(fair_value, n = 1) |> ungroup()
+top_name  <- names(sort(table(top_each_period$industry), decreasing = TRUE))[1]
+top_count <- sum(top_each_period$industry == top_name)
+max_high  <- max(metrics$pct_fv_high_tier)
+```
+
+## Row
+
+```{r}
+#| label: heatmap
+blue_scale <- list(c(0, "#cde2fb"), c(0.25, "#86b6ef"), c(0.5, "#3987e5"),
+                   c(0.75, "#1c5cab"), c(1, "#0d366b"))
+heat_plot <- plot_ly(
+  x = format(periods, "%b %Y"), y = row_order$row_label, z = z,
+  type = "heatmap", colorscale = blue_scale, zmin = 0, xgap = 2, ygap = 2,
+  text = hover, hoverinfo = "text",
+  colorbar = list(title = list(text = "% of fair value"), thickness = 12),
+  height = 24 * nrow(row_order) + 140
+) |>
+  layout(
+    xaxis = list(title = "", tickangle = -45, side = "top"),
+    yaxis = list(title = "", autorange = "reversed", tickfont = list(size = 11)),
+    margin = list(l = 10, r = 10, t = 60, b = 10),
+    plot_bgcolor = "#fcfcfb", paper_bgcolor = "#fcfcfb",
+    font = list(family = "system-ui, -apple-system, Segoe UI, sans-serif")
+  ) |>
+  config(displayModeBar = FALSE)
+
+tagList(
+  chart_title(
+    paste0(top_name, " has been BCRED's largest sector in ", top_count, " of ", length(periods),
+           " periods; High-intensity sectors never exceed ", fmt_pct(max_high), " of fair value"),
+    paste0("Share of fair value by industry and quarter. Rows are the ", nrow(row_order),
+           " industries held at ", fmt_date(latest), ", grouped by tier (label after the dot). ",
+           "Blank cells: not held that period.")),
+  heat_plot
+)
+```
+
+## Row
+
+```{r}
+#| label: sector-table
+tagList(
+  chart_title(paste0("Sector detail, ", fmt_date(latest)),
+              "Same numbers as data/processed/sector_summary.csv. Sector-level proxy, not financed emissions."),
+  reactable(
+    s_latest |>
+      arrange(desc(fair_value)) |>
+      transmute(Industry = industry, Tier = tier,
+                `Fair value ($bn)` = fair_value / 1e9,
+                `% of portfolio` = pct_of_portfolio,
+                `Factor (t CO2e/$m)` = factor_t_per_usd_m,
+                `% of indicator` = pct_of_indicator),
+    searchable = TRUE, defaultPageSize = 15, compact = TRUE, striped = FALSE,
+    columns = list(
+      `Fair value ($bn)`   = colDef(format = colFormat(digits = 2)),
+      `% of portfolio`     = colDef(format = colFormat(digits = 2)),
+      `Factor (t CO2e/$m)` = colDef(format = colFormat(digits = 0), na = "no proxy"),
+      `% of indicator`     = colDef(format = colFormat(digits = 1), na = "–")
+    )
+  )
+)
+```
+
+# Holdings explorer
+
+```{r}
+#| label: holdings-prep
+band <- function(pct_cost, cost) dplyr::case_when(
+  cost == 0          ~ "Cost is zero (e.g. warrants)",
+  pct_cost < 80      ~ "Below 80% of cost",
+  pct_cost < 100     ~ "80-100% of cost",
+  TRUE               ~ "At or above cost"
+)
+h <- holdings |>
+  transmute(
+    Investment   = investment,
+    Affiliation  = ifelse(is.na(affiliation), "BCRED JV stake (not stated)", affiliation),
+    fair_value_m = fair_value / 1e6,
+    cost_m       = cost / 1e6,
+    pct_of_cost  = ifelse(cost > 0, 100 * fair_value / cost, NA_real_),
+    Valuation    = band(pct_of_cost, cost),
+    pct_nav      = 100 * pct_net_assets,
+    rate         = 100 * interest_rate,
+    spread       = 100 * spread
+  )
+n_below_80 <- sum(h$Valuation == "Below 80% of cost")
+n_above_cap <- sum(h$pct_of_cost > 200, na.rm = TRUE)
+shared <- SharedData$new(h, key = ~Investment, group = "holdings")
+```
+
+## {.sidebar}
+
+**Filter holdings**
+
+```{r}
+filter_select("aff", "Affiliation", shared, ~Affiliation)
+filter_select("val", "Valuation vs cost", shared, ~Valuation)
+filter_slider("fv", "Fair value ($m)", shared, ~fair_value_m, round = TRUE)
+```
+
+Filters apply to both the chart and the table. Drag a box on the chart to select holdings.
+
+Industry isn't shown: BCRED doesn't tag industry on individual holdings, only on sector subtotals.
+
+## Row {height=45%}
+
+```{r}
+#| label: holdings-chart
+scatter <- plot_ly(
+  shared, x = ~cost_m, y = ~pct_of_cost, type = "scatter", mode = "markers",
+  marker = list(color = "#2a78d6", size = 8, opacity = 0.55,
+                line = list(color = "#fcfcfb", width = 1)),
+  text = ~paste0("<b>", Investment, "</b><br>", Affiliation,
+                 "<br>Fair value: $", formatC(fair_value_m, format = "f", digits = 1), "m",
+                 "<br>Cost: $", formatC(cost_m, format = "f", digits = 1), "m",
+                 "<br>Fair value / cost: ", formatC(pct_of_cost, format = "f", digits = 1), "%"),
+  hoverinfo = "text"
+) |>
+  layout(
+    xaxis = list(title = "Cost ($m, log scale)", type = "log", gridcolor = "#e1e0d9"),
+    yaxis = list(title = "Fair value as % of cost", range = c(0, 200), gridcolor = "#e1e0d9"),
+    shapes = list(list(type = "line", xref = "paper", x0 = 0, x1 = 1, y0 = 100, y1 = 100,
+                       line = list(color = "#898781", width = 1, dash = "dot"))),
+    margin = list(l = 50, r = 10, t = 10, b = 50),
+    plot_bgcolor = "#fcfcfb", paper_bgcolor = "#fcfcfb", dragmode = "select",
+    font = list(family = "system-ui, -apple-system, Segoe UI, sans-serif")
+  ) |>
+  highlight(on = "plotly_selected", off = "plotly_deselect", color = "#104281") |>
+  config(displayModeBar = FALSE)
+
+tagList(
+  chart_title(
+    paste0("Most holdings are valued close to cost; ", n_below_80, " of ",
+           format(nrow(h), big.mark = ","), " are marked below 80% of cost"),
+    paste0("Each dot is one holding (", fmt_date(latest), "). Dotted line = valued at cost. ",
+           "Y-axis cut at 200% (", n_above_cap, " holdings above it); ",
+           sum(h$Valuation == "Cost is zero (e.g. warrants)"), " zero-cost holdings not plotted.")),
+  scatter
+)
+```
+
+## Row {height=55%}
+
+```{r}
+#| label: holdings-table
+reactable(
+  shared,
+  searchable = TRUE, defaultPageSize = 12, compact = TRUE, highlight = TRUE,
+  selection = "multiple", onClick = "select",
+  defaultSorted = list(fair_value_m = "desc"),
+  columns = list(
+    Investment   = colDef(minWidth = 220),
+    Affiliation  = colDef(minWidth = 150),
+    fair_value_m = colDef(name = "Fair value ($m)", format = colFormat(digits = 1, separators = TRUE)),
+    cost_m       = colDef(name = "Cost ($m)", format = colFormat(digits = 1, separators = TRUE)),
+    pct_of_cost  = colDef(name = "FV % of cost", format = colFormat(digits = 1), na = "–"),
+    Valuation    = colDef(minWidth = 140),
+    pct_nav      = colDef(name = "% of net assets", format = colFormat(digits = 2), na = "–"),
+    rate         = colDef(name = "Rate (%)", format = colFormat(digits = 2), na = "–"),
+    spread       = colDef(name = "Spread (%)", format = colFormat(digits = 2), na = "–")
+  )
+)
+```

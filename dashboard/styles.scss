@@ -1,0 +1,32 @@
+/*-- scss:defaults --*/
+// One typeface everywhere (system sans) and one blue scale for data.
+$font-family-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+$body-bg: #f9f9f7;
+$body-color: #0b0b0b;
+$primary: #2a78d6;
+$navbar-bg: #ffffff;
+$navbar-fg: #0b0b0b;
+$link-color: #1c5cab;
+
+/*-- scss:rules --*/
+.card, .bslib-value-box { background-color: #fcfcfb; border: 1px solid rgba(11, 11, 11, 0.10); }
+.card-header { font-weight: 600; font-size: 0.95rem; background-color: #fcfcfb; }
+.bslib-value-box .value-box-title { color: #52514e; font-size: 0.85rem; }
+.bslib-value-box .value-box-value { color: #0b0b0b; }
+.takeaway { font-size: 1.1rem; line-height: 1.5; padding: 0.25rem 0.5rem; }
+.proxy-label { color: #52514e; font-size: 0.85rem; }
+.reactable { font-size: 0.85rem; font-variant-numeric: tabular-nums; }
+
+// Phones: keep everything inside the screen width.
+@media (max-width: 576px) {
+  html, body { overflow-x: hidden; }
+  .navbar-brand-container { min-width: 0; flex-shrink: 1; }
+  .navbar-title, .navbar-title-text { white-space: normal !important; font-size: 1rem; }
+  .navbar-author { display: none; }
+  .takeaway { font-size: 0.95rem; }
+  .bslib-value-box .value-box-grid { grid-template-columns: 3rem 1fr !important; }
+  .bslib-value-box .value-box-showcase { max-width: 3rem; font-size: 1.4rem; padding: 0 0 0 0.75rem !important; }
+  .bslib-value-box .value-box-showcase svg, .bslib-value-box .value-box-showcase i { width: 1.6rem !important; height: 1.6rem !important; font-size: 1.6rem !important; }
+  .bslib-value-box .value-box-value { font-size: 1.75rem !important; }
+  .card, .bslib-value-box { max-width: 100%; }
+}
