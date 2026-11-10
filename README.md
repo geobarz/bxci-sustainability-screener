@@ -7,10 +7,7 @@ data, and published with GitHub Pages from the `/docs` folder.
 
 **Live dashboard:** https://geobarz.github.io/bxci-sustainability-screener/ *(once GitHub Pages is enabled)*
 
-<!-- SCREENSHOT PLACEHOLDER: save a screenshot of the Overview page as
-     docs-notes/img/dashboard-overview.png and uncomment the line below. -->
-<!-- ![Dashboard overview](docs-notes/img/dashboard-overview.png) -->
-> 📷 *Screenshot coming soon.*
+![Dashboard overview](docs-notes/img/dashboard-overview.png)
 
 ## The business question
 
